@@ -1,0 +1,46 @@
+
+<div class="sidebar">
+  <div class="sidebar__inner">
+    <div class="sidebar-header">
+      <a href="/"><img src="<%= static_path(@conn, "/images/logo.png") %>" class="logo"/></a>
+      <h1><a href="/">Credo</a></h1>
+      <p>Static Analysis, the Elixir way.</p>
+    </div>
+  </div>
+  <div class="sidebar__inner sidebar-nav-container">
+    <label for="sidebar-checkbox" class="sidebar-toggle">
+      <%= if false do %>
+        <span class="sidebar-toggle__notification-indicator"></span>
+      <% end %>
+      <i class="icon-user"></i>
+    </label>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+    <input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+    <nav class="sidebar-nav">
+      <div class="sidebar-nav-separator"></div>
+
+      <a href="https://github.com/rrrene/credo" class="btn btn--sign-in" target="_blank">Source on GitHub</a>
+
+      <div class="github-star-iframe">
+        <!-- Place this tag where you want the button to render. -->
+        <a class="github-button" href="https://github.com/rrrene/credo" data-icon="octicon-star" data-style="mega" data-count-href="/rrrene/credo/stargazers" data-count-api="/repos/rrrene/credo#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star rrrene/credo on GitHub">Star</a>
+        <!-- Place this tag in your head or just before your close body tag. -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+      </div>
+
+      <div class="sidebar-nav-separator"></div>
+
+      <div class="sidebar__text">
+        Credo is a code analysis tool for the Elixir language with a focus on code consistency and teaching.
+      </div>
+
+      <div class="sidebar-nav-separator"></div>
+
+      <div class="sidebar__text">
+        Brought to you by <a href="http://elixirstatus.com" target="_blank">@elixirstatus</a>
+      </div>
+    </nav>
+  </div>
+</div>

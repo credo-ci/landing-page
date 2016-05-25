@@ -1,0 +1,454 @@
+<div class="jumbotron">
+  <h1>Welcome to Credo!
+    <a href="https://travis-ci.org/rrrene/credo"><img src="https://travis-ci.org/rrrene/credo.svg?branch=master" alt="Build Status" data-canonical-src="" style="max-width:100%;"></a> <a href="https://beta.hexfaktor.org/github/rrrene/credo"><img src="https://beta.hexfaktor.org/badge/all/github/rrrene/credo.svg" alt="Deps Status" data-canonical-src="" style="max-width:100%;"></a> <a href="http://inch-ci.org/github/rrrene/credo"><img src="http://inch-ci.org/github/rrrene/credo.svg?branch=master" alt="Inline docs" data-canonical-src="" style="max-width:100%;"></a>
+  </h1>
+  <!--
+  <p>
+    Credo is a static code analysis tool for the Elixir language. It is based on a collaborative style-guide.
+
+    <hr>
+
+    Credo supports Elixir 1.1+.
+
+    <hr>
+
+    Define <code>credo</code> as a dep on your project:
+<pre>
+  {:credo, "~> 0.3", only: [:dev, :test]}
+</pre>
+
+    <hr>
+
+    Running <code>mix credo</code> with no arguments will check all Elixir source files and report prioritized issues in a "regular" report.
+
+    Running <code>mix credo --strict</code> will generate a "strict" report which includes all issues, including nit-picky code style checks.
+
+    <hr>
+
+    Use <code>mix credo -h</code> to display available command-line options.
+  </p>
+  -->
+</div>
+
+<hr>
+
+
+
+
+<article class="markdown-body entry-content" itemprop="text">
+
+<p>Credo is a static code analysis tool for the Elixir language with a focus on teaching and code consistency.</p>
+
+<p>It implements <a href="https://github.com/rrrene/elixir-style-guide">its own style guide</a>.</p>
+
+<h2><a id="user-content-what-can-it-do" class="anchor" href="#what-can-it-do" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>What can it do?</h2>
+
+<p><code>credo</code> can show you refactoring opportunities in your code, complex and duplicated code fragments, warn you about common mistakes, show inconsistencies in your naming scheme and - if needed - help you enforce a desired coding style.</p>
+
+<p>If you are a Rubyist it is best described as an opinionated mix between <a href="https://github.com/rrrene/inch">Inch</a> and <a href="https://github.com/bbatsov/rubocop">Rubocop</a>.</p>
+
+<div class="screenshot screenshot--tty"><img src="<%= static_path(@conn, "/images/screenshot.png") %>" /></div>
+
+<h2><a id="user-content-installation" class="anchor" href="#installation" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Installation</h2>
+
+<p>Add as a dependency in your mix.exs file:</p>
+
+<div class="highlight highlight-source-elixir"><pre><span class="pl-k">defp</span> <span class="pl-en">deps</span> <span class="pl-k">do</span>
+  [
+    {<span class="pl-c1">:credo</span>, <span class="pl-s"><span class="pl-pds">"</span>~&gt; 0.3<span class="pl-pds">"</span></span>, <span class="pl-c1">only:</span> [<span class="pl-c1">:dev</span>, <span class="pl-c1">:test</span>]}
+  ]
+<span class="pl-k">end</span></pre></div>
+
+<p>And run:</p>
+
+<pre><code>$ mix deps.get
+</code></pre>
+
+<h2><a id="user-content-basic-usage" class="anchor" href="#basic-usage" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Basic Usage</h2>
+
+<p>To run credo in the current project, <strong>just type</strong>:</p>
+
+<pre><code>$ mix credo
+</code></pre>
+
+<p>This will run the code analysis and suggest places to edit your code.</p>
+
+<p><strong>If you want to enforce a style guide</strong> and need a more traditional linting experience, try</p>
+
+<pre><code>$ mix credo --strict
+</code></pre>
+
+<p>and continue reading in the Configuration section.</p>
+
+<p>If you want the <strong>list of issues grouped by files</strong> instead of suggestions just type:</p>
+
+<pre><code>$ mix credo list
+</code></pre>
+
+<p>You will get output like this:</p>
+
+<pre><code>┃ Refactoring opportunities
+┃
+┃ [R] ↗ If/else blocks should not have a negated condition in `if`.
+┃       lib/phoenix/channel.ex:26 (Phoenix.Channel.subscribe)
+┃ [R] → Function is too complex (max ABC is 15, was 43).
+┃       lib/phoenix/router.ex:563:8 (Phoenix.Router.add_resources)
+┃ [R] → Function is too complex (max ABC is 15, was 16).
+┃       lib/phoenix/router/socket.ex:12:12 (Phoenix.Router.Socket.channel)
+┃
+</code></pre>
+
+<p>Now you might want to know more about that particular entry, <strong>just copy the filename+line-number combo into the command</strong>:</p>
+
+<pre><code>$ mix credo lib/phoenix/channel.ex:26
+
+┃ Phoenix.Channel
+┃
+┃   [R] Category: refactor
+┃    ↗  Priority: medium
+┃
+┃       If/else blocks should not have a negated condition in `if`.
+┃       lib/phoenix/channel.ex:26 (Phoenix.Channel.subscribe)
+┃
+┃    __ CODE IN QUESTION
+┃
+┃       if !Socket.authenticated?(socket, channel, topic) do
+┃
+┃    __ WHY IT MATTERS
+┃
+┃       An `if` block with a negated condition should not contain an else block.
+┃
+┃       So while this is fine:
+┃
+┃           if !allowed? do
+┃             raise "Not allowed!"
+┃           end
+┃
+┃       The code in this example ...
+┃
+┃           if !allowed? do
+┃             raise "Not allowed!"
+┃           else
+┃             proceed_as_planned
+┃           end
+┃
+┃       ... should be refactored to look like this:
+┃
+┃           if allowed? do
+┃             proceed_as_planned
+┃           else
+┃             raise "Not allowed!"
+┃           end
+┃
+┃       The reason for this is not a technical but a human one. It is easier to wrap
+┃       your head around a positive condition and then thinking "and else we do ...".
+┃
+┃       In the above example raising the error in case something is not allowed
+┃       might seem so important to put it first. But when you revisit this code a
+┃       while later or have to introduce a colleague to it, you might be surprised
+┃       how much clearer things get when the "happy path" comes first.
+</code></pre>
+
+<h2><a id="user-content-configuration" class="anchor" href="#configuration" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Configuration</h2>
+
+<h3><a id="user-content-configuration-via-credoexs" class="anchor" href="#configuration-via-credoexs" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Configuration via .credo.exs</h3>
+
+<p>Credo is configured via a file called <code>.credo.exs</code>. This file can live in your project's <code>config/</code> or root folder, both is fine.</p>
+
+<div class="highlight highlight-source-elixir"><pre><span class="pl-c"># config/.credo.exs</span>
+%{
+  <span class="pl-c1">configs:</span> [
+    %{
+      <span class="pl-c1">name:</span> <span class="pl-s"><span class="pl-pds">"</span>default<span class="pl-pds">"</span></span>,
+      <span class="pl-c1">files:</span> %{
+        <span class="pl-c1">included:</span> [<span class="pl-s"><span class="pl-pds">"</span>lib/<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>src/<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>web/<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>apps/<span class="pl-pds">"</span></span>],
+        <span class="pl-c1">excluded:</span> []
+      },
+      <span class="pl-c1">checks:</span> [
+        {<span class="pl-c1">Credo</span>.<span class="pl-c1">Check</span>.<span class="pl-c1">Consistency</span>.<span class="pl-c1">TabsOrSpaces</span>},
+
+<span class="pl-c">        # For some checks, like AliasUsage, you can only customize the priority</span>
+<span class="pl-c">        # Priority values are: `low, normal, high, higher`</span>
+        {<span class="pl-c1">Credo</span>.<span class="pl-c1">Check</span>.<span class="pl-c1">Design</span>.<span class="pl-c1">AliasUsage</span>, <span class="pl-c1">priority:</span> <span class="pl-c1">:low</span>},
+
+<span class="pl-c">        # For others you can also set parameters</span>
+        {<span class="pl-c1">Credo</span>.<span class="pl-c1">Check</span>.<span class="pl-c1">Readability</span>.<span class="pl-c1">MaxLineLength</span>, <span class="pl-c1">priority:</span> <span class="pl-c1">:low</span>, <span class="pl-c1">max_length:</span> <span class="pl-c1">80</span>},
+
+<span class="pl-c">        # You can also customize the exit_status of each check.</span>
+<span class="pl-c">        # If you don't want TODO comments to cause `mix credo` to fail, just</span>
+<span class="pl-c">        # set this value to 0 (zero).</span>
+        {<span class="pl-c1">Credo</span>.<span class="pl-c1">Check</span>.<span class="pl-c1">Design</span>.<span class="pl-c1">TagTODO</span>, <span class="pl-c1">exit_status:</span> <span class="pl-c1">2</span>},
+
+<span class="pl-c">        # There are two ways of deactivating a check:</span>
+<span class="pl-c">        # 1. deleting the check from this list</span>
+<span class="pl-c">        # 2. putting `false` as second element (to quickly "comment it out"):</span>
+        {<span class="pl-c1">Credo</span>.<span class="pl-c1">Check</span>.<span class="pl-c1">Design</span>.<span class="pl-c1">TagFIXME</span>, <span class="pl-c1">false</span>},
+
+<span class="pl-c">        # ... several checks omitted for readability ...</span>
+      ]
+    }
+  ]
+}</pre></div>
+
+<p>Take a look at Credo's own <code>.credo.exs</code> for a <a href="https://github.com/rrrene/credo/blob/master/.credo.exs">complete example configuration</a>.</p>
+
+<h3><a id="user-content-inline-configuration-via-lint-attributes" class="anchor" href="#inline-configuration-via-lint-attributes" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Inline configuration via @lint attributes</h3>
+
+<p><code>@lint</code> attributes can be used to configure linting for specific functions.</p>
+
+<p>This lets you exclude functions completely</p>
+
+<div class="highlight highlight-source-elixir"><pre><span class="pl-smi">@lint</span> <span class="pl-c1">false</span>
+<span class="pl-k">def</span> <span class="pl-en">my_fun</span> <span class="pl-k">do</span>
+<span class="pl-k">end</span></pre></div>
+
+<p>or deactivate specific checks <em>with the same syntax used in the config file</em>:</p>
+
+<div class="highlight highlight-source-elixir"><pre><span class="pl-smi">@lint</span> {<span class="pl-c1">Credo</span>.<span class="pl-c1">Check</span>.<span class="pl-c1">Design</span>.<span class="pl-c1">TagTODO</span>, <span class="pl-c1">false</span>}
+<span class="pl-k">def</span> <span class="pl-en">my_fun</span> <span class="pl-k">do</span>
+<span class="pl-k">end</span></pre></div>
+
+<p>or use a Regex instead of the check module to exclude multiple checks at once:</p>
+
+<div class="highlight highlight-source-elixir"><pre><span class="pl-smi">@lint</span> {<span class="pl-s"><span class="pl-pds">~r/</span>Refactor<span class="pl-pds">/</span></span>, <span class="pl-c1">false</span>}
+<span class="pl-k">def</span> <span class="pl-en">my_fun</span> <span class="pl-k">do</span>
+<span class="pl-k">end</span></pre></div>
+
+<p>Finally, you can supply multiple tuples as a list and combine the above:</p>
+
+<div class="highlight highlight-source-elixir"><pre><span class="pl-smi">@lint</span> [{<span class="pl-c1">Credo</span>.<span class="pl-c1">Check</span>.<span class="pl-c1">Design</span>.<span class="pl-c1">TagTODO</span>, <span class="pl-c1">false</span>}, {<span class="pl-s"><span class="pl-pds">~r/</span>Refactor<span class="pl-pds">/</span></span>, <span class="pl-c1">false</span>}]
+<span class="pl-k">def</span> <span class="pl-en">my_fun</span> <span class="pl-k">do</span>
+<span class="pl-k">end</span></pre></div>
+
+<h2><a id="user-content-exit-status" class="anchor" href="#exit-status" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Exit Status</h2>
+
+<p>Credo fails with an exit status != 0 if it shows any issues. This enables shell based pipeline workflows (e.g. on CI systems) which test Credo compliance.</p>
+
+<p>The exit status of each check is customizable and exit statuses of all
+encountered checks are collected, uniqued and summed:</p>
+
+<div class="highlight highlight-source-elixir"><pre>issues
+<span class="pl-k">|</span><span class="pl-k">&gt;</span> <span class="pl-c1">Enum</span>.map(&amp;(<span class="pl-smi">&amp;1</span>.exit_status))
+<span class="pl-k">|</span><span class="pl-k">&gt;</span> <span class="pl-c1">Enum</span>.uniq
+<span class="pl-k">|</span><span class="pl-k">&gt;</span> <span class="pl-c1">Enum</span>.reduce(<span class="pl-c1">0</span>, &amp;(<span class="pl-smi">&amp;1</span><span class="pl-k">+</span><span class="pl-smi">&amp;2</span>))</pre></div>
+
+<p>This way you can reason about the encountered issues right from the exit status.</p>
+
+<p>Default values for the checks are based on their category:</p>
+
+<pre><code>consistency:  1
+design:       2
+readability:  4
+refactor:     8
+warning:     16
+</code></pre>
+
+<p>So an exit status of 12 tells you that you have only Readability Issues and Refactoring Opportunities, but e.g. no Warnings.</p>
+
+<h2><a id="user-content-commands" class="anchor" href="#commands" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Commands</h2>
+
+<h3><a id="user-content-suggest-default-command" class="anchor" href="#suggest-default-command" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>suggest (default command)</h3>
+
+<p><code>suggest</code> is the default command of Credo. It suggests issues to fix in your code, but it cuts the list to a digestable count. If you want to see the full list, use the <code>--all</code>  switch.</p>
+
+<p>Example usage:</p>
+
+<pre><code>$ mix credo                         # display standard report
+$ mix credo suggest                 # same thing, since it's the default command
+$ mix credo --all --format=oneline  # include low priority issues, one issue per line
+
+$ mix credo suggest --help          # more options
+</code></pre>
+
+<h3><a id="user-content-list" class="anchor" href="#list" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>list</h3>
+
+<p><code>list</code> also suggests issues, but it groups them by file and does NOT cut the list to a certain count.</p>
+
+<p>Example usage:</p>
+
+<pre><code>$ mix credo list                      # show issues grouped by file
+$ mix credo list --format=oneline     # show issues grouped by file, one issue per line
+$ mix credo list --format=oneline -a  # same thing, include low priority issues
+
+$ mix credo list --help               # more options
+</code></pre>
+
+<h3><a id="user-content-explain" class="anchor" href="#explain" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>explain</h3>
+
+<p><code>explain</code> allows you to dig deeper into an issue, by showing you details about the issue and the reasoning by it being reported. To be convenient, you can just copy-paste the <code>filename:line_number:column</code> string from the report behind the Credo command to check it out.</p>
+
+<p><em>Credits:</em> This is inspired by how you can snap the info from failed tests behind <code>mix test</code>.</p>
+
+<p>Example usage:</p>
+
+<pre><code>$ mix credo lib/my_app/server.ex:10:24          # show explanation for the issue
+$ mix credo explain lib/my_app/server.ex:10:24  # same thing
+</code></pre>
+
+<p>There are no additional options.</p>
+
+<h3><a id="user-content-categories" class="anchor" href="#categories" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>categories</h3>
+
+<p><code>categories</code> shows you all issue categories and explains their semantics.</p>
+
+<p>There are no additional options.</p>
+
+<h2><a id="user-content-command-line-options" class="anchor" href="#command-line-options" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Command line options</h2>
+
+<h3><a id="user-content-only-run-some-checks" class="anchor" href="#only-run-some-checks" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Only run some checks</h3>
+
+<p>To run only a subset of checks, you can use the <code>--checks</code> or the <code>-c</code> alias (also aliased as <code>--only</code>).</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c"># to only run the Readability checks, use:</span>
+
+$ mix credo --only readability
+
+<span class="pl-c"># to only run Readability checks and Warnings, use:</span>
+
+$ mix credo --only readability,warning</pre></div>
+
+<p>The second example illustrates how the command takes a comma-separated list. All commands matching <strong>any</strong> of the passed items will be run.</p>
+
+<p>You can use partial names to quickly run checks. <code>mix credo --only todo</code> will show all <code># TODO</code> comments since <code>todo</code> will match Credo.Check.Design.Tag<strong>TODO</strong>. <code>mix credo --only inspect</code> will show you all calls to <code>IO.inspect</code> since it matches Credo.Check.Warning.Io<strong>Inspect</strong>.</p>
+
+<h3><a id="user-content-ignore-some-checks" class="anchor" href="#ignore-some-checks" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Ignore some checks</h3>
+
+<p>To ignore selected checks, you can use the <code>--ignore-checks</code> or the <code>-i</code> alias (also aliased as <code>--ignore</code>).</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c"># to ignore all Readability checks, use:</span>
+
+$ mix credo --ignore readability
+
+<span class="pl-c"># to ignore all Readability checks and the DuplicatedCode check, use:</span>
+
+$ mix credo --ignore readability,duplicated</pre></div>
+
+<p>The second example illustrates how the command takes a comma-separated list. All commands matching any of the passed items will be ignored.</p>
+
+<p>You can use partial names to quickly exclude checks. <code>mix credo --ignore nameredec</code> will exclude all checks for variables/parameters having the same name as declared functions by matching Credo.Check.Warning.<strong>NameRedeclarationBy...</strong></p>
+
+<h3><a id="user-content-parsing-source-from-stdin" class="anchor" href="#parsing-source-from-stdin" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Parsing source from STDIN</h3>
+
+<p>You can also use Credo to parse source that has been piped directly into it.
+This is especially useful when integrating with external editors. You can use this feature by passing the <code>--read-from-stdin</code> option as follows:</p>
+
+<div class="highlight highlight-source-shell"><pre>$ <span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">'</span>IO.puts("hello world");<span class="pl-pds">'</span></span> <span class="pl-k">|</span> mix credo --format=flycheck --read-from-stdin
+<span class="pl-c"># stdin:1: C: There is no whitespace around parentheses/brackets most of the time, but here there is.</span></pre></div>
+
+<p>Notice the origin if the source is coming annotated as <code>stdin</code>, you can change this annotation by passing it along after option like so:</p>
+
+<div class="highlight highlight-source-shell"><pre>$ <span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">'</span>IO.puts("hello world");<span class="pl-pds">'</span></span> <span class="pl-k">|</span> mix credo --format=flycheck --read-from-stdin /path/representing/the_current/source.ex
+<span class="pl-c"># /path/representing/the_current/source.ex:1: C: There is no whitespace around parentheses/brackets most of the time, but here there is.</span></pre></div>
+
+<p>Do note with the passed option as filename is a stub that is just used to prefix the error and so certain editors can annotate the original file.</p>
+
+<h3><a id="user-content-using-credo-as-stand-alone" class="anchor" href="#using-credo-as-stand-alone" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Using Credo as stand alone</h3>
+
+<p>If you do not want or are not allowed to include credo in the current project you can also use it stand alone by installing it as follows:</p>
+
+<div class="highlight highlight-source-shell"><pre>$ git clone git@github.com:rrrene/credo.git
+$ <span class="pl-c1">cd</span> credo
+$ mix deps.get
+$ mix archive.build
+$ mix archive.install</pre></div>
+
+<p>You will now be able to invoke credo as usual through mix with <code>mix credo</code>. This option is especially handy so credo can be used by external editors.</p>
+
+<h3><a id="user-content-show-code-snippets-in-the-output" class="anchor" href="#show-code-snippets-in-the-output" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Show code snippets in the output</h3>
+
+<p>Use the <code>--verbose</code> switch to include the code snippets in question in the output.</p>
+
+<h3><a id="user-content-show-compact-list" class="anchor" href="#show-compact-list" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Show compact list</h3>
+
+<p>Use <code>--format=oneline</code> to format the output to represent each issue by a single line.</p>
+
+<h3><a id="user-content-show-all-issues-including-low-priority-ones" class="anchor" href="#show-all-issues-including-low-priority-ones" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Show all issues including low priority ones</h3>
+
+<p>Use the <code>--all-priorities</code> switch to include low priority issues in the output (aliased as <code>--strict</code>).</p>
+
+<h2><a id="user-content-issues" class="anchor" href="#issues" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Issues</h2>
+
+<p>Like any code linter, Credo reports issues. Contrary to many other linters these issues are not created equal. Each issue is assigned a priority, based on a base priority set by the config and a dynamic component based on violation severity and location in the source code.</p>
+
+<p>These priorities hint at the importance of each issue and are displayed in the command-line interface using arrows: ↑ ↗ → ↘ ↓</p>
+
+<p>By default, only issues with a positive priority are part of the report (↑ ↗ →).</p>
+
+<h2><a id="user-content-checks" class="anchor" href="#checks" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Checks</h2>
+
+<h3><a id="user-content-consistency" class="anchor" href="#consistency" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Consistency</h3>
+
+<p>These checks take a look at your code and ensure a consistent coding style. Using tabs or spaces? Both is fine, just don't mix them or Credo will tell you.</p>
+
+<h3><a id="user-content-readability" class="anchor" href="#readability" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Readability</h3>
+
+<p>Readability checks do not concern themselves with the technical correctness of your code, but how easy it is to digest.</p>
+
+<h3><a id="user-content-refactoring-opportunities" class="anchor" href="#refactoring-opportunities" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Refactoring Opportunities</h3>
+
+<p>The Refactor checks show you opportunities to avoid future problems and technical debt.</p>
+
+<h3><a id="user-content-software-design" class="anchor" href="#software-design" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Software Design</h3>
+
+<p>While refactor checks show you possible problems, these checks try to highlight possibilities, like - potentially intended - duplicated code or <em>TODO</em> and <em>FIXME</em> comments.</p>
+
+<h3><a id="user-content-warnings" class="anchor" href="#warnings" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Warnings</h3>
+
+<p>These checks warn you about things that are potentially dangerous, like a missed call to <code>IEx.pry</code> or a call to String.downcase without saving the result.</p>
+
+<h2><a id="user-content-contributing" class="anchor" href="#contributing" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Contributing</h2>
+
+<ol>
+<li><a href="http://github.com/rrrene/credo/fork">Fork it!</a></li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol>
+
+<h2><a id="user-content-author" class="anchor" href="#author" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Author</h2>
+
+<p>René Föhring (<a href="https://github.com/rrrene/credo" target="_blank">@rrrene</a>)</p>
+
+<h2><a id="user-content-license" class="anchor" href="#license" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>License</h2>
+
+<p>Credo is released under the MIT License. See the LICENSE file for further
+details.</p>
+</article>
+
+
+<%= if false do %>
+
+<div class="row marketing">
+  <div class="col-lg-6">
+    <h4>Resources</h4>
+    <ul>
+      <li>
+        <a href="http://phoenixframework.org/docs/overview">Guides</a>
+      </li>
+      <li>
+        <a href="https://hexdocs.pm/phoenix">Docs</a>
+      </li>
+      <li>
+        <a href="https://github.com/phoenixframework/phoenix">Source</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-lg-6">
+    <h4>Help</h4>
+    <ul>
+      <li>
+        <a href="http://groups.google.com/group/phoenix-talk">Mailing list</a>
+      </li>
+      <li>
+        <a href="http://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on freenode IRC</a>
+      </li>
+      <li>
+        <a href="https://twitter.com/elixirphoenix">@elixirphoenix</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<% end %>
