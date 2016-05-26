@@ -1,6 +1,7 @@
 <div class="jumbotron">
   <h1>Welcome to Credo!
-    <a href="https://travis-ci.org/rrrene/credo"><img src="https://travis-ci.org/rrrene/credo.svg?branch=master" alt="Build Status" data-canonical-src="" style="max-width:100%;"></a> <a href="https://beta.hexfaktor.org/github/rrrene/credo"><img src="https://beta.hexfaktor.org/badge/all/github/rrrene/credo.svg" alt="Deps Status" data-canonical-src="" style="max-width:100%;"></a> <a href="http://inch-ci.org/github/rrrene/credo"><img src="http://inch-ci.org/github/rrrene/credo.svg?branch=master" alt="Inline docs" data-canonical-src="" style="max-width:100%;"></a>
+    <a href="https://github.com/rrrene/credo" target="_blank"><i class="icon-octopus"></i></a>
+    <span style="white-space: nowrap"><a href="https://travis-ci.org/rrrene/credo"><img src="https://travis-ci.org/rrrene/credo.svg?branch=master" alt="Build Status" data-canonical-src="" style="max-width:100%;"></a> <a href="https://beta.hexfaktor.org/github/rrrene/credo"><img src="https://beta.hexfaktor.org/badge/all/github/rrrene/credo.svg" alt="Deps Status" data-canonical-src="" style="max-width:100%;"></a> <a href="http://inch-ci.org/github/rrrene/credo"><img src="http://inch-ci.org/github/rrrene/credo.svg?branch=master" alt="Inline docs" data-canonical-src="" style="max-width:100%;"></a></span>
   </h1>
   <!--
   <p>

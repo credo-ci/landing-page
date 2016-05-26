@@ -1,7 +1,12 @@
 .github-star-iframe {
   margin-top: 10px;
+  min-height: 40px;
 }
 
 svg {
   display: none;
+}
+
+i.icon-octopus {
+  color: #333;
 }
